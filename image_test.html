@@ -65,7 +65,8 @@
     </div>
 
     <script>
-        document.getElementById('load-images').addEventListener('click', () => {
+        const loadButton = document.getElementById('load-images');
+        loadButton.addEventListener('click', () => {
             const image8K = document.getElementById('image-8k');
             const imageFHD = document.getElementById('image-fhd');
             const time8K = document.getElementById('time-8k');
@@ -73,8 +74,10 @@
             const logList = document.getElementById('log-list');
 
             // Paths to local image files for 8K and FHD
-            const path8K = "8k.jpg"; // Path to 8K image file
-            const pathFHD = "fhd.jpg"; // Path to FHD image file
+            const path8K = "abc_8k.jpg"; // Path to 8K image file
+            const pathFHD = "abc_fhd.jpg"; // Path to FHD image file
+
+            loadButton.disabled = true; // Disable the button while loading
 
             const start8K = performance.now();
             image8K.src = path8K;
@@ -86,6 +89,8 @@
                 const logItem = document.createElement('li');
                 logItem.textContent = `8K Image loaded in ${duration8K} ms`;
                 logList.appendChild(logItem);
+
+                checkAndEnableButton();
             };
 
             const startFHD = performance.now();
@@ -98,8 +103,18 @@
                 const logItem = document.createElement('li');
                 logItem.textContent = `FHD Image loaded in ${durationFHD} ms`;
                 logList.appendChild(logItem);
+
+                checkAndEnableButton();
             };
         });
+
+        function checkAndEnableButton() {
+            const image8K = document.getElementById('image-8k');
+            const imageFHD = document.getElementById('image-fhd');
+            if (image8K.complete && imageFHD.complete) {
+                loadButton.disabled = false; // Re-enable the button after loading
+            }
+        }
     </script>
 </body>
 </html>
