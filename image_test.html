@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8K vs FHD Image Load Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+        .image-container {
+            margin: 10px 0;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        .log {
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 80%;
+            background: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>8K vs FHD Image Load Test</h1>
+        <p>Click the button below to load an 8K image and an FHD image simultaneously. Repeat as needed to log results.</p>
+        <button id="load-images">Load Images</button>
+
+        <div id="results">
+            <div class="image-container">
+                <h3>8K Image</h3>
+                <img id="image-8k" src="" alt="8K Image" width="800" height="450" />
+                <p id="time-8k"></p>
+            </div>
+            <div class="image-container">
+                <h3>FHD Image</h3>
+                <img id="image-fhd" src="" alt="FHD Image" width="800" height="450" />
+                <p id="time-fhd"></p>
+            </div>
+        </div>
+        <div class="log" id="log">
+            <h3>Test Log</h3>
+            <ul id="log-list"></ul>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('load-images').addEventListener('click', () => {
+            const image8K = document.getElementById('image-8k');
+            const imageFHD = document.getElementById('image-fhd');
+            const time8K = document.getElementById('time-8k');
+            const timeFHD = document.getElementById('time-fhd');
+            const logList = document.getElementById('log-list');
+
+            // Paths to local image files for 8K and FHD
+            const path8K = "8k.jpg"; // Path to 8K image file
+            const pathFHD = "fhd.jpg"; // Path to FHD image file
+
+            const start8K = performance.now();
+            image8K.src = path8K;
+            image8K.onload = () => {
+                const end8K = performance.now();
+                const duration8K = (end8K - start8K).toFixed(2);
+                time8K.textContent = `Loaded in ${duration8K} ms`;
+
+                const logItem = document.createElement('li');
+                logItem.textContent = `8K Image loaded in ${duration8K} ms`;
+                logList.appendChild(logItem);
+            };
+
+            const startFHD = performance.now();
+            imageFHD.src = pathFHD;
+            imageFHD.onload = () => {
+                const endFHD = performance.now();
+                const durationFHD = (endFHD - startFHD).toFixed(2);
+                timeFHD.textContent = `Loaded in ${durationFHD} ms`;
+
+                const logItem = document.createElement('li');
+                logItem.textContent = `FHD Image loaded in ${durationFHD} ms`;
+                logList.appendChild(logItem);
+            };
+        });
+    </script>
+</body>
+</html>
